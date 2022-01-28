@@ -1,3 +1,33 @@
-.app{
-    background-color: #f5f5f5; 
+.app {
+  height: 100vh;
+  background-color: hsl(223, 36%, 17%);
+  font-size: 1rem;
+  color: hsl(0, 0%, 100%);
+}
+
+.char-box {
+  height: 50px;
+  width: 50px;
+  border: 2px solid rgb(116, 117, 146);
+  border-radius: 5px;
+  padding: 50px;
+  margin: 10px;
+}
+
+.keyboard-wrapper {
+  max-width: 900px;
+}
+
+.keyboard-box {
+  height: 10px;
+  width: 10px;
+  background-color: rgb(72, 76, 97);
+  border: 2px solid rgb(182, 192, 212);
+  border-radius: 5px;
+  padding: 30px;
+  margin: 10px;
+}
+
+.pointer {
+  cursor: pointer;
 }
