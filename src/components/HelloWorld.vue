@@ -20,14 +20,20 @@
       </div>
     </div>
 
-    <my-keyboard @check="check" v-model:keys="keyboards" />
+    <my-keyboard @check="check" v-model:keys="keyboards" class="p-5" />
   </div>
 </template>
 
 <script>
 import MyKeyboard from "@/components/Keyboard";
+import { useToast } from "vue-toastification";
 
 export default {
+  setup() {
+    // Get toast interface
+    const toast = useToast();
+    return { toast };
+  },
   name: "HelloWorld",
   components: {
     MyKeyboard,
@@ -59,7 +65,83 @@ export default {
       step: 0,
       length: 5,
       solution: null,
-      arrayOfSolution: ["peopl", "apple", "peach", "corop", "prelo", "poiuy", "qwert", "asdfg", "zxcvb", "poiuy", "qwert", "asdfg", "zxcvb", "mnlkj"],
+      arrayOfSolution: [
+        "baker",
+        "apple",
+        "peach",
+        "awake",
+        "grade",
+        "quiet",
+        "total",
+        "paste",
+        "sleep",
+        "queen",
+        "silly",
+        "smoke",
+        "funny",
+        "bully",
+        "novel",
+        "silly",
+        "alarm",
+        "short",
+        "puppy",
+        "pizza",
+        "anime",
+        "await",
+        "press",
+        "bleep",
+        "stuff",
+        "email",
+        "anger",
+        "punch",
+        "woman",
+        "chess",
+        "chain",
+        "occur",
+        "metro",
+        "virus",
+        "flask",
+        "limbo",
+        "omega",
+        "feast",
+        "drank",
+        "freak",
+        "which",
+        "among",
+        "laugh",
+        "fault",
+        "fifty",
+        "skill",
+        "knock",
+        "speak",
+        "stoop",
+        "turbo",
+        "nomad",
+        "empty",
+        "reach",
+        "agile",
+        "apply",
+        "timer",
+        "shift",
+        "canon",
+        "gangs",
+        "jerky",
+        "scrum",
+        "cobra",
+        "ratio",
+        "drama",
+        "worse",
+        "krill",
+        "gypsy",
+        "melon",
+        "dress",
+        "local",
+        "kiosk",
+        "title",
+        "march",
+        "brain",
+        
+      ],
       keyboards: [
         { char: "q", notCorrect: false },
         { char: "w", notCorrect: false },
@@ -95,10 +177,12 @@ export default {
   mounted() {
     const solution = JSON.parse(localStorage.getItem("solution"));
     if (solution) {
-      this.solution = solution
-    }
-    else {
-      this.solution = this.arrayOfSolution[Math.floor(Math.random() * this.arrayOfSolution.length)];
+      this.solution = solution;
+    } else {
+      this.solution =
+        this.arrayOfSolution[
+          Math.floor(Math.random() * this.arrayOfSolution.length)
+        ];
       localStorage.setItem("solution", JSON.stringify(this.solution));
     }
 
@@ -132,7 +216,7 @@ export default {
               correct: false,
               exist: false,
             };
-  
+
             findStep.word.push(sample);
           }
         } else if (findStep.word.length == this.length && input === "enter") {
@@ -147,7 +231,7 @@ export default {
       // check word is in array of solution
       const word = findStep.word.map((i) => i.char).join("");
       if (!this.arrayOfSolution.includes(word)) {
-        return;
+        return this.toast("Not in word list");
       }
 
       let solution = this.solution.split("");
@@ -176,23 +260,23 @@ export default {
         }
       });
       if (set) {
-        this.setItem(word)
+        this.setItem(word);
       }
       // else finish the game
-      
+
       if (solution == "-".repeat(this.length)) {
-        this.finishGame()
-      }
-      else if (this.step == 4) {
-        this.finishGame()
+        this.finishGame();
+        return this.toast.success("WINNER");
+      } else if (this.step == 4) {
+        this.finishGame();
+        return this.toast.danger("YOU ARE LOSER");
       }
       this.step++;
     },
-    finishGame () {
+    finishGame() {
       localStorage.removeItem("suggestion");
-      localStorage.removeItem('solution')
+      localStorage.removeItem("solution");
       this.step = 5;
-      return
     },
     setItem(word) {
       const suggestion = JSON.parse(localStorage.getItem("suggestion")) || [];
